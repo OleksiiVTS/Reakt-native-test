@@ -1,5 +1,7 @@
 import { useState } from 'react';
+// import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import {
+  View,
   SafeAreaView,
   ImageBackground,
   StyleSheet,
@@ -9,14 +11,31 @@ import {
   Pressable,
   Image,
 } from 'react-native';
-import addPhoto from './images/addPhoto.jpg';
+// import add from '../images/add.svg';
+import addPhoto from '../images/addPhoto.jpg';
 
 export default function RegistrationScreen() {
   const [login, setLogin] = useState('');
 
   return (
     <SafeAreaView style={styles.container}>
-      <Image alignToCenter style={styles.image} source={addPhoto}></Image>
+      <View style={styles.containerImage}>
+        <Image alignToCenter style={styles.image} source={addPhoto}></Image>
+        <Pressable
+          style={
+            true
+              ? styles.buttonImage
+              : [styles.buttonImage, styles.buttonAddImage]
+          }
+        >
+          <View
+            style={true ? styles.plus : [styles.plus, styles.iconAddImage]}
+          />
+          <View
+            style={true ? styles.minus : [styles.minus, styles.iconAddImage]}
+          />
+        </Pressable>
+      </View>
       <ScrollView alignItems="center" style={styles.form}>
         <Text style={styles.text}>Реєстрація</Text>
         <TextInput
@@ -28,9 +47,11 @@ export default function RegistrationScreen() {
         />
         <TextInput
           style={styles.input}
+          dataDetectorTypes="address"
+          inputMode="email"
           placeholder="Адреса електронної пошти"
         />
-        <TextInput style={styles.input} placeholder="Пароль" />
+        <TextInput style={styles.input} secureTextEntry placeholder="Пароль" />
         <Pressable style={styles.button}>
           <Text style={styles.textButton}>Зареєстуватися</Text>
         </Pressable>
@@ -46,18 +67,54 @@ const styles = StyleSheet.create({
   container: {
     padding: 0,
     margin: 0,
-    minWidth: 375,
-    flex: 1,
   },
-  image: {
+  containerImage: {
     position: 'absolute',
     left: '50%',
     marginLeft: -60,
     top: 203,
     zIndex: 1,
+  },
+  image: {
     width: 120,
     height: 120,
     borderRadius: 16,
+  },
+  buttonImage: {
+    zIndex: 2,
+    position: 'absolute',
+    bottom: 14,
+    right: -12.5,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 25,
+    height: 25,
+    borderWidth: 2,
+    borderStyle: 'solid',
+    borderColor: '#FF6C00',
+    borderRadius: 25,
+  },
+  plus: {
+    position: 'absolute',
+    height: 13,
+    borderLeftWidth: 2,
+    borderStyle: 'solid',
+    borderColor: '#FF6C00',
+  },
+  minus: {
+    position: 'absolute',
+    width: 13,
+    borderTopWidth: 2,
+    borderStyle: 'solid',
+    borderColor: '#FF6C00',
+  },
+  buttonAddImage: {
+    transform: [{ rotate: '45deg' }],
+    borderColor: '#E8E8E8',
+  },
+  iconAddImage: {
+    borderColor: '#E8E8E8',
   },
   text: {
     marginTop: 92,

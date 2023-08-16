@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, ImageBackground } from 'react-native';
-import RegistrationScreen from './Screens/RegistrationScreen';
+import RegistrationScreen from './Screens/pages/RegistrationScreen';
 import PhotoBG from './Screens/images/PhotoBG.jpg';
 
 export default function App() {
