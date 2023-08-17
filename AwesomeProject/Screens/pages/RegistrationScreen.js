@@ -10,61 +10,91 @@ import {
   TextInput,
   Pressable,
   Image,
+  Keyboard,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 // import add from '../images/add.svg';
 import addPhoto from '../images/addPhoto.jpg';
 
 export default function RegistrationScreen() {
   const [login, setLogin] = useState('');
+  const [visiblePassword, setVisiblePassword] = useState(true);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.containerImage}>
-        <Image alignToCenter style={styles.image} source={addPhoto}></Image>
-        <Pressable
-          style={
-            true
-              ? styles.buttonImage
-              : [styles.buttonImage, styles.buttonAddImage]
-          }
-        >
-          <View
-            style={true ? styles.plus : [styles.plus, styles.iconAddImage]}
-          />
-          <View
-            style={true ? styles.minus : [styles.minus, styles.iconAddImage]}
-          />
-        </Pressable>
-      </View>
-      <ScrollView alignItems="center" style={styles.form}>
-        <Text style={styles.text}>Реєстрація</Text>
-        <TextInput
-          style={styles.input}
-          onChange={setLogin}
-          value={login}
-          placeholder="Логін"
-          autoFocus
-        />
-        <TextInput
-          style={styles.input}
-          dataDetectorTypes="address"
-          inputMode="email"
-          placeholder="Адреса електронної пошти"
-        />
-        <TextInput style={styles.input} secureTextEntry placeholder="Пароль" />
-        <Pressable style={styles.button}>
-          <Text style={styles.textButton}>Зареєстуватися</Text>
-        </Pressable>
-        <Text style={styles.link} dataDetectorType="link">
-          Вже є акаунт? Увійти
-        </Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <ScrollView>
+        <View style={styles.containerImage}>
+          <Image alignToCenter style={styles.image} source={addPhoto}></Image>
+          <Pressable
+            style={
+              true
+                ? styles.buttonImage
+                : [styles.buttonImage, styles.buttonAddImage]
+            }
+          >
+            <View
+              style={true ? styles.plus : [styles.plus, styles.iconAddImage]}
+            />
+            <View
+              style={true ? styles.minus : [styles.minus, styles.iconAddImage]}
+            />
+          </Pressable>
+        </View>
+        <View alignItems="center" style={styles.form}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+            style={styles.container}
+          >
+            <Text style={styles.text}>Реєстрація</Text>
+            <TextInput
+              style={styles.input}
+              onChange={setLogin}
+              value={login}
+              placeholder="Логін"
+              autoFocus
+            />
+            <TextInput
+              style={styles.input}
+              dataDetectorTypes="address"
+              inputMode="email"
+              keyboardType="email-address"
+              placeholder="Адреса електронної пошти"
+            />
+            <View>
+              <TextInput
+                style={styles.input}
+                autoComplete="new-password"
+                secureTextEntry={visiblePassword && true}
+                maxLength={20}
+                placeholder="Пароль"
+              ></TextInput>
+              <Pressable
+                onPress={() => setVisiblePassword(!visiblePassword)}
+                style={styles.showButton}
+              >
+                <Text style={styles.showText}>
+                  {visiblePassword ? 'Показати' : 'Сховати'}
+                </Text>
+              </Pressable>
+            </View>
+          </KeyboardAvoidingView>
+          <Pressable style={styles.button}>
+            <Text style={styles.textButton}>Зареєстуватися</Text>
+          </Pressable>
+          <Text style={styles.link} dataDetectorType="link">
+            Вже є акаунт? Увійти
+          </Text>
+        </View>
       </ScrollView>
-    </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 0,
     margin: 0,
   },
@@ -79,6 +109,21 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 16,
+  },
+  showText: {
+    fontFamily: 'Roboto',
+    fontSize: 16,
+    fontWeight: 400,
+    lineHeight: 19,
+    textAlign: 'right',
+    color: '#1B4371',
+  },
+  showButton: {
+    position: 'absolute',
+    right: 16,
+    bottom: 15,
+    minWidth: 10,
+    // backgroundColor: 'red',
   },
   buttonImage: {
     zIndex: 2,
